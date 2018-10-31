@@ -32,7 +32,3 @@ p.save("test.png")
 ```
 
 ![output](examples/test.png)
-
-## Dependencies
-
-This module uses [treeform](https://github.com/treeform)'s modules typography and flippy.
