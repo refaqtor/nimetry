@@ -26,6 +26,12 @@ type
 
 proc newPlot*(width, height: int): Plot =
   var p = Plot(width: width, height: height)
+  p.axes.xmin = -10
+  p.axes.xmax = 10
+  p.axes.ymin = -10
+  p.axes.ymax = 10
+  p.axes.xtic = 1
+  p.axes.ytic = 1
   return p
 
 proc setTitle*(p: Plot, t: string) =
