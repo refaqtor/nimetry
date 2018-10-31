@@ -18,12 +18,15 @@ type
     xtic, ytic: float
     xmax, xmin: float
     ymax, ymin: float
+  Graph* = object
+    data: Dataset
+    color: ColorRGBA
   Plot* = ref object
+    graphs: seq[Graph]
     title: string
     font: Font
     width, height: int
     axes: Axes
-    data: Dataset
 
 proc newPlot*(width = 480, height = 360): Plot =
   var p = Plot(width: width, height: height)
@@ -34,6 +37,9 @@ proc newPlot*(width = 480, height = 360): Plot =
   p.axes.xtic = 1
   p.axes.ytic = 1
   return p
+
+proc addGraph*(p: Plot, d: Dataset, c: ColorRGBA = rgba(255, 0, 0, 255)) =
+  p.graphs.add(Graph(data: d, color: c))
 
 proc setTitle*(p: Plot, t: string) =
   p.title = t
@@ -52,8 +58,8 @@ proc setXtic*(p: Plot, tic: float) =
 proc setYtic*(p: Plot, tic: float) =
   p.axes.ytic = tic
 
-proc setData*(p: Plot, d: seq[XY]) =
-  p.data = d
+#proc setData*(p: Plot, d: Dataset) =
+#  p.data = d
 
 proc setFontTtf*(p: Plot, fn: string) =
   p.font = readFontTtf(fn)
@@ -154,21 +160,23 @@ method save*(p: Plot, fn: string) {.base.} =
   var
     prevPoint: XY
     count = 0
-  for point in p.data:
-    if point.x > p.axes.xmin and point.x < p.axes.xmax and
-        point.y > p.axes.ymin and point.y < p.axes.ymax:
-      let
-        offsetPoint: XY = (point.x - p.axes.xmin, point.y - p.axes.ymin)
-        newPoint: XY = (
-          (offsetPoint.x / (xlen))*(float(p.width)-2*padding),
-          (offsetPoint.y / (ylen))*(float(p.height)-2*padding)
-        )
-      if count != 0:
-        img.line(
-          vec2(padding+prevPoint.x, (float(p.height)-padding)-prevPoint.y),
-          vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y),
-          rgba(255, 0, 0, 255)
-        )
-      prevPoint = newPoint
-      count += 1
+  for graph in p.graphs:
+    for point in graph.data:
+      if point.x > p.axes.xmin and point.x < p.axes.xmax and
+          point.y > p.axes.ymin and point.y < p.axes.ymax:
+        let
+          offsetPoint: XY = (point.x - p.axes.xmin, point.y - p.axes.ymin)
+          newPoint: XY = (
+            (offsetPoint.x / (xlen))*(float(p.width)-2*padding),
+            (offsetPoint.y / (ylen))*(float(p.height)-2*padding)
+          )
+        if count != 0:
+          img.line(
+            vec2(padding+prevPoint.x, (float(p.height)-padding)-prevPoint.y),
+            vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y),
+            graph.color
+          )
+        prevPoint = newPoint
+        count += 1
+    count = 0
   img.save(fn)
