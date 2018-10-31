@@ -5,7 +5,7 @@
 - Changing font sizes
 - Changing padding size
 - Algrebra expression parser and dataset generator?
-- Multiple datasets (and multiple lines)
+- ~~Multiple datasets (and multiple lines)~~
 - Legend drawing
 - Add ability to "unset" parts of output (axes ticks, etc)
 - Add optional dots at where points are
