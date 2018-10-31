@@ -72,7 +72,7 @@ proc alphaWhite(image: var Image) =
       c.a = 255
       image.putrgba(x, y, c)
 
-method save*(p: Plot, filename: string) {.base.} =
+proc save*(p: Plot, filename: string) =
   let
     xlen = p.axes.xmax - p.axes.xmin
     ylen = p.axes.ymax - p.axes.ymin
