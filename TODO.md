@@ -5,3 +5,4 @@
 - Algrebra expression parser and dataset generator?
 - Multiple datasets (and multiple lines)
 - Legend drawing
+- Add ability to "unset" parts of output (axes ticks, etc)
