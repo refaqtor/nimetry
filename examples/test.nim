@@ -20,5 +20,6 @@ p.setYtic(0.25)
 p.setData(data)
 
 p.setTitle("Sine Curve")
+p.setFontTtf("fonts/Vera.ttf")
 
 p.save("test.png")
