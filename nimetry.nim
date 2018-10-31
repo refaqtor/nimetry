@@ -56,11 +56,11 @@ proc setXtic*(p: Plot, tic: float) =
 proc setYtic*(p: Plot, tic: float) =
   p.axes.ytic = tic
 
-proc setFontTtf*(p: Plot, fn: string) =
-  p.font = readFontTtf(fn)
+proc setFontTtf*(p: Plot, filename: string) =
+  p.font = readFontTtf(filename)
 
-proc setFontSvg*(p: Plot, fn: string) =
-  p.font = readFontSvg(fn)
+proc setFontSvg*(p: Plot, filename: string) =
+  p.font = readFontSvg(filename)
 
 proc alphaWhite(image: var Image) =
   for x in 0..<image.width:
@@ -72,7 +72,7 @@ proc alphaWhite(image: var Image) =
       c.a = 255
       image.putrgba(x, y, c)
 
-method save*(p: Plot, fn: string) {.base.} =
+method save*(p: Plot, filename: string) {.base.} =
   let
     xlen = p.axes.xmax - p.axes.xmin
     ylen = p.axes.ymax - p.axes.ymin
@@ -194,4 +194,4 @@ method save*(p: Plot, fn: string) {.base.} =
         prevPoint = newPoint
         count += 1
     count = 0
-  img.save(fn)
+  img.save(filename)

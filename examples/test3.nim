@@ -26,6 +26,6 @@ for d in data:
   c += 1
 
 p.setTitle("Powers")
-p.setFontTtf("fonts/Vera.ttf")
+p.setFontSvg("fonts/DejaVuSans.svg")
 
 p.save("test3.png")
