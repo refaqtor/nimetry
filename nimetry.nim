@@ -20,11 +20,12 @@ type
     ymax, ymin: float
   Plot* = ref object
     title: string
+    font: Font
     width, height: int
     axes: Axes
     data: Dataset
 
-proc newPlot*(width, height: int): Plot =
+proc newPlot*(width = 480, height = 360): Plot =
   var p = Plot(width: width, height: height)
   p.axes.xmin = -10
   p.axes.xmax = 10
@@ -54,6 +55,12 @@ proc setYtic*(p: Plot, tic: float) =
 proc setData*(p: Plot, d: seq[XY]) =
   p.data = d
 
+proc setFontTtf*(p: Plot, fn: string) =
+  p.font = readFontTtf(fn)
+
+proc setFontSvg*(p: Plot, fn: string) =
+  p.font = readFontSvg(fn)
+
 proc alphaWhite(image: var Image) =
   for x in 0..<image.width:
     for y in 0..<image.height:
@@ -70,7 +77,7 @@ method save*(p: Plot, fn: string) {.base.} =
     ylen = p.axes.ymax - p.axes.ymin
   var
     img = newImage(p.width, p.height, 4)
-    font = readFontTtf("fonts/Vera.ttf")
+    font = p.font
     text = newImage(p.width, padding-2, 4)
   font.size = 10
   img.fill(rgba(255, 255, 255, 255))
