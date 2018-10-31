@@ -1,6 +1,6 @@
 # Nimetry - Plotting in Pure Nim
 
-This is a huge *WIP*, and as such will be changing frequently. [See documentation here](https://ijneb.github.io/nimetry/).
+This is a WIP, and as such will be changing frequently. [See documentation here](https://ijneb.github.io/nimetry/).
 
 ## Example
 
