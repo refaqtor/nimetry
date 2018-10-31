@@ -11,16 +11,42 @@ const
 
 type
   XY* = tuple[x: float, y: float]
+  Interval* = tuple[start: float, stop: float]
   # TODO: make custom dataset type (for only 1-to-1)
   Dataset* = seq[XY]
-  Axes* = object
-    xtic*, ytic*: float
-    xmax*, xmin*: float
-    ymax*, ymin*: float
+  Axes = object
+    xtic, ytic: float
+    xmax, xmin: float
+    ymax, ymin: float
   Plot* = ref object
-    width*, height*: int
-    axes*: Axes
-    data*: Dataset
+    title: string
+    width, height: int
+    axes: Axes
+    data: Dataset
+
+proc newPlot*(width, height: int): Plot =
+  var p = Plot(width: width, height: height)
+  return p
+
+proc setTitle*(p: Plot, t: string) =
+  p.title = t
+
+proc setX*(p: Plot, start, stop: float) =
+  p.axes.xmin = start
+  p.axes.xmax = stop
+
+proc setY*(p: Plot, start, stop: float) =
+  p.axes.ymin = start
+  p.axes.ymax = stop
+
+proc setXtic*(p: Plot, tic: float) =
+  p.axes.xtic = tic
+
+proc setYtic*(p: Plot, tic: float) =
+  p.axes.ytic = tic
+
+proc setData*(p: Plot, d: seq[XY]) =
+  p.data = d
 
 proc alphaWhite(image: var Image) =
   for x in 0..<image.width:
@@ -39,9 +65,23 @@ method save*(p: Plot, fn: string) {.base.} =
   var
     img = newImage(p.width, p.height, 4)
     font = readFontTtf("fonts/Vera.ttf")
-    text = newImage(padding-2, p.height, 4)
+    text = newImage(p.width, padding-2, 4)
   font.size = 10
   img.fill(rgba(255, 255, 255, 255))
+  if p.title != "":
+    var layout = font.typeset(p.title,
+      pos=vec2(0, 0),
+      size=vec2(float(p.width), float(padding-2)),
+      hAlign=Center,
+      vAlign=Middle
+    )
+    text.drawText(layout)
+    text.alphawhite()
+    img.blit(
+      text,
+      rect(0, 0, float(p.width), float(padding-2)),
+      rect(0, 0, float(p.width), float(padding-2))
+    )
   img.line(
     vec2(padding, padding),
     vec2(padding, float(p.height)-padding),
@@ -55,6 +95,7 @@ method save*(p: Plot, fn: string) {.base.} =
   let
     yticJump = (p.axes.ytic/ylen)*(float(p.height)-2*padding)
     yticAmount = int(floor((float(p.height)-2*padding)/yticJump))
+  text = newImage(padding-2, p.height, 4)
   for ymult in 0 .. yticAmount:
     img.line(
       vec2(padding-2, float(p.height)-padding-yticJump*float(ymult)),
