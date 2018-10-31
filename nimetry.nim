@@ -11,7 +11,6 @@ const
 
 type
   XY* = tuple[x: float, y: float]
-  Interval* = tuple[start: float, stop: float]
   Dataset* = seq[XY]
   Axes = object
     xtic, ytic: float
@@ -29,9 +28,9 @@ type
 
 proc newPlot*(width = 480, height = 360): Plot =
   var p = Plot(width: width, height: height)
-  p.axes.xmin = -10
+  p.axes.xmin = 0
   p.axes.xmax = 10
-  p.axes.ymin = -10
+  p.axes.ymin = 0
   p.axes.ymax = 10
   p.axes.xtic = 1
   p.axes.ytic = 1
@@ -57,9 +56,6 @@ proc setXtic*(p: Plot, tic: float) =
 proc setYtic*(p: Plot, tic: float) =
   p.axes.ytic = tic
 
-#proc setData*(p: Plot, d: Dataset) =
-#  p.data = d
-
 proc setFontTtf*(p: Plot, fn: string) =
   p.font = readFontTtf(fn)
 
@@ -69,7 +65,7 @@ proc setFontSvg*(p: Plot, fn: string) =
 proc alphaWhite(image: var Image) =
   for x in 0..<image.width:
     for y in 0..<image.height:
-      var c = image.getrgba(x, y)
+      var c = image.getRgba(x, y)
       c.r = uint8(255) - c.a
       c.g = uint8(255) - c.a
       c.b = uint8(255) - c.a
@@ -120,7 +116,17 @@ method save*(p: Plot, fn: string) {.base.} =
       vec2(padding+2, float(p.height)-padding-yticJump*float(ymult)),
       rgba(0, 0, 0, 255)
     )
-    var layout = font.typeset(formatFloat(p.axes.ymin+p.axes.ytic*float(ymult), ffDecimal, 2),
+    var
+      decimals: bool
+      number: float
+    if p.axes.ytic-floor(p.axes.ytic) == 0:
+      decimals = false
+    else:
+      decimals = true
+    number = p.axes.ymin+p.axes.ytic*float(ymult)
+    let stringNumber = if decimals: formatFloat(number, ffDecimal, 2) else: $(int(number))
+    var layout = font.typeset(
+      stringNumber,
       pos=vec2(0, float(p.height)-padding-yticJump*float(ymult)-6),
       size=vec2(padding-4, 12),
       hAlign=Right,
@@ -143,8 +149,18 @@ method save*(p: Plot, fn: string) {.base.} =
       vec2(float(p.width)-padding-xticJump*float(xmult), float(p.height)-padding-2),
       rgba(0, 0, 0, 255)
     )
-    var layout = font.typeset(formatFloat(p.axes.xmin+p.axes.xtic*float(xmult), ffDecimal, 2),
-      pos=vec2(xticJump*float(xmult)+padding*0.5, 0),
+    var
+      decimals: bool
+      number: float
+    if p.axes.xtic-floor(p.axes.xtic) == 0:
+      decimals = false
+    else:
+      decimals = true
+    number = p.axes.xmin+p.axes.xtic*float(xmult)
+    let stringNumber = if decimals: formatFloat(number, ffDecimal, 2) else: $(int(number))
+    var layout = font.typeset(
+      stringNumber,
+      pos=vec2(xticJump*float(xmult)+padding-0.5*(float(p.width)-padding*2)/float(xticAmount), 0),
       size=vec2(float(p.width-padding*2)/float(xticAmount), 12),
       hAlign=Center,
       vAlign=Top
@@ -161,8 +177,8 @@ method save*(p: Plot, fn: string) {.base.} =
     count = 0
   for graph in p.graphs:
     for point in graph.data:
-      if point.x > p.axes.xmin and point.x < p.axes.xmax and
-          point.y > p.axes.ymin and point.y < p.axes.ymax:
+      if point.x >= p.axes.xmin and point.x <= p.axes.xmax and
+          point.y >= p.axes.ymin and point.y <= p.axes.ymax:
         let
           offsetPoint: XY = (point.x - p.axes.xmin, point.y - p.axes.ymin)
           newPoint: XY = (
