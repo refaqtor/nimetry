@@ -1,5 +1,6 @@
 # Nimetry - Plotting in Pure Nim
-This is a huge *WIP*.
+
+This is a huge *WIP*, and as such, will be changing frequently.
 
 ## Example
 
