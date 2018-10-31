@@ -11,3 +11,4 @@
 - Add optional dots at where points are
 - Custom number formatting (scientific/decimal, amount of decimals)
 - Filled area plots; translucent colors
+- Measure distance from pixel to actual datapoint and adjust opacity accordingly
