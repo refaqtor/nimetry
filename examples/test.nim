@@ -23,7 +23,7 @@ p.setYtic(0.25)
 p.addGraph(data, rgba(255, 0, 0, 255))
 p.addGraph(data2, rgba(0, 0, 255, 255))
 
-p.setTitle("Sine Curve")
+p.setTitle("Sine and Log10")
 p.setFontTtf("fonts/Vera.ttf")
 
 p.save("test.png")

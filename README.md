@@ -1,6 +1,6 @@
 # Nimetry - Plotting in Pure Nim
 
-This is a huge *WIP*, and as such, will be changing frequently.
+This is a huge *WIP*, and as such will be changing frequently.
 
 ## Example
 
@@ -26,9 +26,13 @@ p.addGraph(data, rgba(255, 0, 0, 255))
 p.addGraph(data2, rgba(0, 0, 255, 255))
 
 p.setFontTtf("fonts/Vera.ttf")
-p.setTitle("Sine Curve")
+p.setTitle("Sine and Log10")
 
 p.save("test.png")
 ```
 
 ![output](examples/test.png)
+
+## Dependencies
+
+This module uses [treeform](https://github.com/treeform)'s modules typography and flippy.

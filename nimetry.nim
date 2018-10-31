@@ -12,7 +12,6 @@ const
 type
   XY* = tuple[x: float, y: float]
   Interval* = tuple[start: float, stop: float]
-  # TODO: make custom dataset type (for only 1-to-1)
   Dataset* = seq[XY]
   Axes = object
     xtic, ytic: float
