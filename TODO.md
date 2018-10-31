@@ -8,3 +8,4 @@
 - Multiple datasets (and multiple lines)
 - Legend drawing
 - Add ability to "unset" parts of output (axes ticks, etc)
+- Custom number formatting (scientific/decimal, amount of decimals)
