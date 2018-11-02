@@ -1241,13 +1241,17 @@ function main() {
 <li>
   <a class="reference reference-toplevel" href="#7" id="57">Types</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#XY"
+      <li><a class="reference" href="#GraphStyle"
+    title="GraphStyle = enum
+  Line, Dot"><wbr />Graph<wbr />Style<span class="attachedType" style="visibility:hidden"></span></a></li>
+  <li><a class="reference" href="#XY"
     title="XY = tuple[x: float, y: float]"><wbr />XY<span class="attachedType" style="visibility:hidden"></span></a></li>
   <li><a class="reference" href="#Dataset"
     title="Dataset = seq[XY]"><wbr />Dataset<span class="attachedType" style="visibility:hidden"></span></a></li>
   <li><a class="reference" href="#Graph"
     title="Graph = object
   data: Dataset
+  style: GraphStyle
   color: ColorRGBA"><wbr />Graph<span class="attachedType" style="visibility:hidden"></span></a></li>
   <li><a class="reference" href="#Plot"
     title="Plot = ref object
@@ -1264,8 +1268,8 @@ function main() {
   <ul class="simple simple-toc-section">
       <li><a class="reference" href="#newPlot,int,int"
     title="newPlot(width = 480; height = 360): Plot"><wbr />new<wbr />Plot<span class="attachedType" style="visibility:hidden">Plot</span></a></li>
-  <li><a class="reference" href="#addGraph,Plot,Dataset,ColorRGBA"
-    title="addGraph(p: Plot; d: Dataset; c: ColorRGBA = rgba(255, 0, 0, 255))"><wbr />add<wbr />Graph<span class="attachedType" style="visibility:hidden">Plot</span></a></li>
+  <li><a class="reference" href="#addGraph,Plot,Dataset,GraphStyle,ColorRGBA"
+    title="addGraph(p: Plot; d: Dataset; s: GraphStyle; c: ColorRGBA = rgba(255, 0, 0, 255))"><wbr />add<wbr />Graph<span class="attachedType" style="visibility:hidden">Plot</span></a></li>
   <li><a class="reference" href="#setTitle,Plot,string"
     title="setTitle(p: Plot; t: string)"><wbr />set<wbr />Title<span class="attachedType" style="visibility:hidden">Plot</span></a></li>
   <li><a class="reference" href="#setX,Plot,float,float"
@@ -1295,6 +1299,12 @@ function main() {
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
+<dt id="GraphStyle"><a name="GraphStyle"></a><pre><a href="nimetry.html#GraphStyle"><span class="Identifier">GraphStyle</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <span class="Identifier">Line</span><span class="Other">,</span> <span class="Identifier">Dot</span></pre></dt>
+<dd>
+
+
+</dd>
 <dt id="XY"><a name="XY"></a><pre><a href="nimetry.html#XY"><span class="Identifier">XY</span></a> <span class="Other">=</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">,</span> <span class="Identifier">y</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">]</span></pre></dt>
 <dd>
 
@@ -1307,6 +1317,7 @@ function main() {
 </dd>
 <dt id="Graph"><a name="Graph"></a><pre><a href="nimetry.html#Graph"><span class="Identifier">Graph</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">data</span><span class="Other">:</span> <a href="nimetry.html#Dataset"><span class="Identifier">Dataset</span></a>
+  <span class="Identifier">style</span><span class="Other">:</span> <a href="nimetry.html#GraphStyle"><span class="Identifier">GraphStyle</span></a>
   <span class="Identifier">color</span><span class="Other">:</span> <span class="Identifier">ColorRGBA</span>
 </pre></dt>
 <dd>
@@ -1334,7 +1345,8 @@ function main() {
 
 
 </dd>
-<dt id="addGraph"><a name="addGraph,Plot,Dataset,ColorRGBA"></a><pre><span class="Keyword">proc</span> <span class="Identifier">addGraph</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="nimetry.html#Plot"><span class="Identifier">Plot</span></a><span class="Other">;</span> <span class="Identifier">d</span><span class="Other">:</span> <a href="nimetry.html#Dataset"><span class="Identifier">Dataset</span></a><span class="Other">;</span> <span class="Identifier">c</span><span class="Other">:</span> <span class="Identifier">ColorRGBA</span> <span class="Other">=</span> <span class="Identifier">rgba</span><span class="Other">(</span><span class="DecNumber">255</span><span class="Other">,</span> <span class="DecNumber">0</span><span class="Other">,</span> <span class="DecNumber">0</span><span class="Other">,</span> <span class="DecNumber">255</span><span class="Other">)</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt id="addGraph"><a name="addGraph,Plot,Dataset,GraphStyle,ColorRGBA"></a><pre><span class="Keyword">proc</span> <span class="Identifier">addGraph</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="nimetry.html#Plot"><span class="Identifier">Plot</span></a><span class="Other">;</span> <span class="Identifier">d</span><span class="Other">:</span> <a href="nimetry.html#Dataset"><span class="Identifier">Dataset</span></a><span class="Other">;</span> <span class="Identifier">s</span><span class="Other">:</span> <a href="nimetry.html#GraphStyle"><span class="Identifier">GraphStyle</span></a><span class="Other">;</span> <span class="Identifier">c</span><span class="Other">:</span> <span class="Identifier">ColorRGBA</span> <span class="Other">=</span> <span class="Identifier">rgba</span><span class="Other">(</span><span class="DecNumber">255</span><span class="Other">,</span> <span class="DecNumber">0</span><span class="Other">,</span> <span class="DecNumber">0</span><span class="Other">,</span> <span class="DecNumber">255</span><span class="Other">)</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1392,7 +1404,7 @@ unequals operator. This is a shorthand for <tt class="docutils literal"><span cl
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2018-10-31 23:04:36 UTC</small>
+        <small>Made with Nim. Generated: 2018-11-02 17:36:56 UTC</small>
       </div>
     </div>
   </div>
