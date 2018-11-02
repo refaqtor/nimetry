@@ -1,11 +1,16 @@
 import
   nimetry,
   chroma,
-  math
+  math,
+  random
 
 var
   data: Dataset
   data2: Dataset
+  data3: Dataset
+
+for x in 1..20:
+  data3.add((float(x)/2, log10(float(x))+rand(0.2)-0.4))
 
 for x in 0..1000:
   data.add((x: x/100, y: sin(x/100)))
@@ -20,8 +25,9 @@ p.setY(-1.5, 1.5)
 p.setXtic(1)
 p.setYtic(0.25)
 
-p.addGraph(data, rgba(255, 0, 0, 255))
-p.addGraph(data2, rgba(0, 0, 255, 255))
+p.addGraph(data, Line, rgba(255, 0, 0, 255))
+p.addGraph(data2, Line, rgba(0, 0, 255, 255))
+p.addGraph(data3, Dot, rgba(0, 0, 0, 255))
 
 p.setTitle("Sine and Log10")
 p.setFontTtf("fonts/Vera.ttf")

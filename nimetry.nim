@@ -10,6 +10,8 @@ const
   padding = 45
 
 type
+  GraphStyle* = enum
+    Line, Dot
   XY* = tuple[x: float, y: float]
   Dataset* = seq[XY]
   Axes = object
@@ -18,6 +20,7 @@ type
     ymax, ymin: float
   Graph* = object
     data: Dataset
+    style: GraphStyle
     color: ColorRGBA
   Plot* = ref object
     graphs: seq[Graph]
@@ -36,8 +39,8 @@ proc newPlot*(width = 480, height = 360): Plot =
   p.axes.ytic = 1
   return p
 
-proc addGraph*(p: Plot, d: Dataset, c: ColorRGBA = rgba(255, 0, 0, 255)) =
-  p.graphs.add(Graph(data: d, color: c))
+proc addGraph*(p: Plot, d: Dataset, s: GraphStyle, c: ColorRGBA = rgba(255, 0, 0, 255)) =
+  p.graphs.add(Graph(data: d, style: s, color: c))
 
 proc setTitle*(p: Plot, t: string) =
   p.title = t
@@ -186,11 +189,25 @@ proc save*(p: Plot, filename: string) =
             (offsetPoint.y / (ylen))*(float(p.height)-2*padding)
           )
         if count != 0:
-          img.line(
-            vec2(padding+prevPoint.x, (float(p.height)-padding)-prevPoint.y),
-            vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y),
-            graph.color
-          )
+          case graph.style
+          of Line:
+            img.line(
+              vec2(padding+prevPoint.x, (float(p.height)-padding)-prevPoint.y),
+              vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y),
+              graph.color
+            )
+          of Dot:
+            img.line(
+              vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y-3),
+              vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y+3),
+              graph.color
+            )
+            img.line(
+              vec2(padding+newPoint.x-3, (float(p.height)-padding)-newPoint.y),
+              vec2(padding+newPoint.x+3, (float(p.height)-padding)-newPoint.y),
+              graph.color
+            )
+          else: discard
         prevPoint = newPoint
         count += 1
     count = 0
