@@ -65,15 +65,15 @@ proc setFontTtf*(p: Plot, filename: string) =
 proc setFontSvg*(p: Plot, filename: string) =
   p.font = readFontSvg(filename)
 
-proc alphaWhite(image: var Image) =
-  for x in 0..<image.width:
-    for y in 0..<image.height:
-      var c = image.getRgba(x, y)
+proc alphaWhite(img: var Image) =
+  for x in 0..<img.width:
+    for y in 0..<img.height:
+      var c = img.getRgba(x, y)
       c.r = uint8(255) - c.a
       c.g = uint8(255) - c.a
       c.b = uint8(255) - c.a
       c.a = 255
-      image.putrgba(x, y, c)
+      img.putrgba(x, y, c)
 
 proc save*(p: Plot, filename: string) =
   let
@@ -120,6 +120,16 @@ proc save*(p: Plot, filename: string) =
             supersampled.line(
               vec2(prevPoint.x, float(p.height*2-padding*4)-prevPoint.y),
               vec2(newPoint.x, float(p.height*2-padding*4)-newPoint.y),
+              graph.color
+            )
+            supersampled.line(
+              vec2(prevPoint.x, float(p.height*2-padding*4)-prevPoint.y+1),
+              vec2(newPoint.x, float(p.height*2-padding*4)-newPoint.y+1),
+              graph.color
+            )
+            supersampled.line(
+              vec2(prevPoint.x+1, float(p.height*2-padding*4)-prevPoint.y),
+              vec2(newPoint.x+1, float(p.height*2-padding*4)-newPoint.y),
               graph.color
             )
           of Dot:
