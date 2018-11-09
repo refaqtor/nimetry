@@ -99,6 +99,51 @@ proc save*(p: Plot, filename: string) =
       rect(0, 0, float(p.width), float(padding-2)),
       rect(0, 0, float(p.width), float(padding-2))
     )
+  var
+    prevPoint: XY
+    count = 0
+    supersampled = newImage(2*(p.width-padding*2), 2*(p.height-padding*2), 4)
+  supersampled.fill(rgba(255, 255, 255, 255))
+  for graph in p.graphs:
+    for point in graph.data:
+      if point.x >= p.axes.xmin and point.x <= p.axes.xmax and
+          point.y >= p.axes.ymin and point.y <= p.axes.ymax:
+        let
+          offsetPoint: XY = (point.x - p.axes.xmin, point.y - p.axes.ymin)
+          newPoint: XY = (
+            (offsetPoint.x / (xlen))*float(2*p.width-padding*4),
+            (offsetPoint.y / (ylen))*float(2*p.height-padding*4)
+          )
+        if count != 0:
+          case graph.style
+          of Line:
+            supersampled.line(
+              vec2(prevPoint.x, float(p.height*2-padding*4)-prevPoint.y),
+              vec2(newPoint.x, float(p.height*2-padding*4)-newPoint.y),
+              graph.color
+            )
+          of Dot:
+            supersampled.line(
+              vec2(newPoint.x, float(p.height*2-padding*4)-newPoint.y-5),
+              vec2(newPoint.x, float(p.height*2-padding*4)-newPoint.y+5),
+              graph.color
+            )
+            supersampled.line(
+              vec2(newPoint.x-5, float(p.height*2-padding*4)-newPoint.y),
+              vec2(newPoint.x+5, float(p.height*2-padding*4)-newPoint.y),
+              graph.color
+            )
+          else: discard
+        prevPoint = newPoint
+        count += 1
+    count = 0
+  supersampled = supersampled.minify(2)
+  blit(
+    img,
+    supersampled,
+    rect(float(0), float(0), float(p.width)-padding*2, float(p.height)-padding*2),
+    rect(float(padding), float(padding), float(p.width)-padding*2, float(p.height)-padding*2)
+  )
   img.line(
     vec2(padding, padding),
     vec2(padding, float(p.height)-padding),
@@ -175,40 +220,4 @@ proc save*(p: Plot, filename: string) =
     rect(float(0), float(0), float(p.width), float(padding-2)),
     rect(float(0), float(p.height-padding+6), float(p.width), float(padding-2))
   )
-  var
-    prevPoint: XY
-    count = 0
-  for graph in p.graphs:
-    for point in graph.data:
-      if point.x >= p.axes.xmin and point.x <= p.axes.xmax and
-          point.y >= p.axes.ymin and point.y <= p.axes.ymax:
-        let
-          offsetPoint: XY = (point.x - p.axes.xmin, point.y - p.axes.ymin)
-          newPoint: XY = (
-            (offsetPoint.x / (xlen))*(float(p.width)-2*padding),
-            (offsetPoint.y / (ylen))*(float(p.height)-2*padding)
-          )
-        if count != 0:
-          case graph.style
-          of Line:
-            img.line(
-              vec2(padding+prevPoint.x, (float(p.height)-padding)-prevPoint.y),
-              vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y),
-              graph.color
-            )
-          of Dot:
-            img.line(
-              vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y-3),
-              vec2(padding+newPoint.x, (float(p.height)-padding)-newPoint.y+3),
-              graph.color
-            )
-            img.line(
-              vec2(padding+newPoint.x-3, (float(p.height)-padding)-newPoint.y),
-              vec2(padding+newPoint.x+3, (float(p.height)-padding)-newPoint.y),
-              graph.color
-            )
-          else: discard
-        prevPoint = newPoint
-        count += 1
-    count = 0
   img.save(filename)

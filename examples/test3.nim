@@ -22,7 +22,7 @@ p.setYtic(0.05)
 p.setXtic(0.1)
 
 for d in data:
-  p.addGraph(d, rgba(uint8(10.5*float(c)), 0, 0, 255))
+  p.addGraph(d, Line, rgba(uint8(10.5*float(c)), 0, 0, uint8(255-10.5*float(c))))
   c += 1
 
 p.setTitle("Powers")

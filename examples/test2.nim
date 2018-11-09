@@ -15,8 +15,8 @@ for x in 0..10:
 var
   p: Plot = newPlot(480, 480)
 
-p.addGraph(data, rgba(255, 0, 0, 255))
-p.addGraph(data2, rgba(0, 0, 255, 255))
+p.addGraph(data, Line, rgba(255, 0, 0, 255))
+p.addGraph(data2, Line, rgba(0, 0, 255, 255))
 
 p.setTitle("Random Lines")
 p.setFontTtf("fonts/Vera.ttf")
