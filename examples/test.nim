@@ -1,6 +1,5 @@
 import
   nimetry,
-  chroma,
   math,
   random
 
@@ -27,7 +26,7 @@ p.setYtic(0.25)
 
 p.addGraph(data, Line, rgba(255, 0, 0, 255))
 p.addGraph(data2, Line, rgba(0, 0, 255, 255))
-p.addGraph(data3, Dot, rgba(0, 0, 0, 255))
+p.addGraph(data3, Scatter, rgba(0, 0, 0, 255))
 
 p.setTitle("Sine and Log10")
 p.setFontTtf("fonts/Vera.ttf")

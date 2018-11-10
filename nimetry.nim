@@ -11,7 +11,7 @@ const
 
 type
   GraphStyle* = enum
-    Line, Dot
+    Line, Scatter, Bar
   XY* = tuple[x: float, y: float]
   Dataset* = seq[XY]
   Axes = object
@@ -28,6 +28,9 @@ type
     font: Font
     width, height: int
     axes: Axes
+
+proc rgba*(r, g, b, a: uint8): ColorRGBA =
+  ColorRGBA(r: r, g: g, b: b, a: a)
 
 proc newPlot*(width = 480, height = 360): Plot =
   var p = Plot(width: width, height: height)
@@ -132,7 +135,7 @@ proc save*(p: Plot, filename: string) =
               vec2(newPoint.x+1, float(p.height*2-padding*4)-newPoint.y),
               graph.color
             )
-          of Dot:
+          of Scatter:
             supersampled.line(
               vec2(newPoint.x, float(p.height*2-padding*4)-newPoint.y-5),
               vec2(newPoint.x, float(p.height*2-padding*4)-newPoint.y+5),
@@ -143,6 +146,15 @@ proc save*(p: Plot, filename: string) =
               vec2(newPoint.x+5, float(p.height*2-padding*4)-newPoint.y),
               graph.color
             )
+          of Bar:
+            let
+              barWidth = float(p.height*2-padding*4)/xlen
+            for offset in 0..int(floor(barWidth)):
+              supersampled.line(
+                vec2(newPoint.x+(barWidth/2)-float(offset), float(p.height*2-padding*4)-newPoint.y),
+                vec2(newPoint.x+(barWidth/2)-float(offset), float(p.height*2-padding*4)),
+                graph.color
+              )
           else: discard
         prevPoint = newPoint
         count += 1
