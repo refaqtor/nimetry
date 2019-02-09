@@ -1,6 +1,4 @@
-# Nimetry - Plotting in Pure Nim
-
-This is a WIP, and as such will be changing frequently.
+# Nimetry - Simple Plotting in Pure Nim
 
 ## Documentation
 
