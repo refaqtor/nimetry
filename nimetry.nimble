@@ -1,4 +1,4 @@
-version     = "0.1.1"
+version     = "0.1.2"
 author      = "ijneb"
 description = "Plotting library in Nim"
 license     = "CC0"
