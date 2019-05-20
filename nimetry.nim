@@ -155,7 +155,6 @@ proc save*(p: Plot, filename: string) =
                 vec2(newPoint.x+(barWidth/2)-float(offset), float(p.height*2-padding*4)),
                 graph.color
               )
-          else: discard
         prevPoint = newPoint
         count += 1
     count = 0
