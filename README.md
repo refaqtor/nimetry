@@ -2,7 +2,7 @@
 
 ## Documentation
 
-[See documentation here](https://ijneb.github.io/nimetry/).
+[See documentation here](https://benjif.github.io/nimetry/).
 
 ## Example Outputs
 
